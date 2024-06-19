@@ -1,0 +1,55 @@
+.profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    background-color: #ffffff;
+    border-right: 1px solid #ddd;
+    border-radius: 20px; /* Adding rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Adding a shadow for better visual */
+    width: 250px; /* Adjust width as needed */
+    margin: 1rem; /* Optional: Adding margin for spacing */
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .profile-banner-image {
+    width: 100%;
+    height: 80px; /* Adjust height as needed */
+    object-fit: cover;
+  }
+  
+  .profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid white;
+    margin-top: -50px; /* Adjust to position the image overlapping the banner */
+    background-color: white;
+  }
+  
+  .profile-details {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .profile-details h2 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+  
+  .profile-details p {
+    margin: 0;
+    color: #666;
+  }
+  
+  .connect-button {
+    background-color: #8bc34a;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 1rem;
+  }
+  

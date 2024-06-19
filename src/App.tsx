@@ -1,26 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
+import Header from './Components/Header';
+import ProfileCard from './Components/ProfileCard';
+import MainContent from './Components/MainContent';
+import bannerImage from './banner-image.png';
+import profilePic from './profile-pic.jpg';
 import './App.css';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Header />
+      <div className="main-layout">
+        <ProfileCard
+          bannerImage={bannerImage}
+          profilePic={profilePic}
+          name="Eric W. Rogers"
+          church="First Baptist Church"
+          location="Magnolia, Arkansas"
+          email="ericwilliamrogers@gmail.com"
+        />
+        <MainContent />
+      </div>
     </div>
   );
-}
+};
 
 export default App;
+
