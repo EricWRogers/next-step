@@ -1,6 +1,6 @@
 import React from 'react';
-import profilePic from '../profile-pic.jpg';
-import bannerImage from '../banner-image.png';
+import profilePic from '../../profile-pic.jpg';
+import bannerImage from '../../banner-image.png';
 import './Header.css'; // Create this CSS file for header-specific styles
 
   const Header: React.FC = () => {

@@ -1,26 +1,25 @@
-import React from 'react';
-import Header from './Components/Header';
-import ProfileCard from './Components/ProfileCard';
-import MainContent from './Components/MainContent';
-import bannerImage from './banner-image.png';
-import profilePic from './profile-pic.jpg';
+import React, { useEffect, useState } from 'react';
+import Profile from './Components/Profile/Profile';
 import './App.css';
 
+import { auth } from './FirebaseConfig';
+import { onAuthStateChanged, User } from "firebase/auth";
+import AuthComponent from './Components/AuthComponent';
+
 const App: React.FC = () => {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe(); // Cleanup subscription on unmount
+  }, []);
+
   return (
     <div className="app">
-      <Header />
-      <div className="main-layout">
-        <ProfileCard
-          bannerImage={bannerImage}
-          profilePic={profilePic}
-          name="Eric W. Rogers"
-          church="First Baptist Church"
-          location="Magnolia, Arkansas"
-          email="ericwilliamrogers@gmail.com"
-        />
-        <MainContent />
-      </div>
+      {user ? <Profile /> : <AuthComponent />}
     </div>
   );
 };
