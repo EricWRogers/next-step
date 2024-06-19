@@ -1,4 +1,5 @@
 import React from 'react';
+import { auth } from '../../FirebaseConfig'
 import profilePic from '../../profile-pic.jpg';
 import bannerImage from '../../banner-image.png';
 import './Header.css'; // Create this CSS file for header-specific styles
@@ -15,7 +16,7 @@ import './Header.css'; // Create this CSS file for header-specific styles
           <div className="header-right">
             <input type="text" className="search" placeholder="Search" />
             <button className="profile-button">
-              <img src={profilePic} alt="Profile" className="profile-icon" />
+              <img src={(auth.currentUser?.photoURL as string) || profilePic} alt="Profile" className="profile-icon" />
             </button>
           </div>
         </div>
