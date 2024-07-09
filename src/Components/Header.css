@@ -50,6 +50,24 @@
   z-index: 2;
 }
 
+.notification-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: -0.8rem;
+  margin-top: -0.8rem;
+  border-radius: 20%;
+  z-index: 3;
+}
+
+.notification-count {
+  margin-left: -0.9rem;
+  margin-top: -0.75rem;
+  color: aliceblue;
+  font-weight: bold;
+  text-decoration-style: bold;
+  z-index: 3;
+}
+
 .header-center {
   display: flex;
   align-items: center;

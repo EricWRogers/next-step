@@ -3,6 +3,7 @@ import { auth } from '../FirebaseConfig';
 import logoIcon from '../logo.png';
 import churchIcon from '../placeholder-fbc.png'
 import profilePic from '../profile-pic.jpg';
+import notificationBackground from '../notification-background.png';
 import bannerImage from '../banner-image.png';
 import './Header.css'; // Create this CSS file for header-specific styles
 
@@ -30,6 +31,8 @@ import './Header.css'; // Create this CSS file for header-specific styles
             <button className="profile-button">
               <img src={(auth.currentUser?.photoURL as string) || profilePic} alt="Profile" className="profile-icon" />
             </button>
+            <img src={notificationBackground} alt="notification" className="notification-icon" />
+            <div className="notification-count">3</div>
           </div>
         </div>
       </header>
