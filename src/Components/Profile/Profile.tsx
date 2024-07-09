@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './Header';
+import Header from '../Header';
 import ProfileCard from './ProfileCard';
 import MainContent from './MainContent';
 import { auth } from '../../FirebaseConfig'
