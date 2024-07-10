@@ -1,16 +1,29 @@
 import React from 'react';
 import { auth } from '../FirebaseConfig';
+import { useNavigate, useLocation } from 'react-router-dom';
+
 import logoIcon from '../logo.png';
 import churchIcon from '../placeholder-fbc.png'
 import profilePic from '../profile-pic.jpg';
 import notificationBackground from '../notification-background.png';
 import bannerImage from '../banner-image.png';
-import './Header.css'; // Create this CSS file for header-specific styles
+
+import './Header.css';
 
   const Header: React.FC = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const handleClick = () => {
+      if (location.pathname === '/dashboard') {
+        navigate('/profile');
+      } else if (location.pathname.startsWith('/profile')) {
+        navigate('/dashboard');
+      }
+    };
+
     return (
       <header className="header">
-        <img src={bannerImage} alt="Banner" className="banner-image" />
         <div className="header-content">
           <div className="logo">
             <img src={logoIcon} alt="Logo" className="logo-icon" />
@@ -28,7 +41,7 @@ import './Header.css'; // Create this CSS file for header-specific styles
           </div>
           <div className="header-right">
             <input type="text" className="search" placeholder="Search" />
-            <button className="profile-button">
+            <button className="profile-button" onClick={handleClick}>
               <img src={(auth.currentUser?.photoURL as string) || profilePic} alt="Profile" className="profile-icon" />
             </button>
             <img src={notificationBackground} alt="notification" className="notification-icon" />

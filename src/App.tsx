@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import Profile from './Components/Profile/Profile';
 import './App.css';
 
 import { auth } from './FirebaseConfig';
 import { onAuthStateChanged, User } from "firebase/auth";
 import AuthComponent from './Components/AuthComponent';
+
+import { AppRoutes } from './Routes/Routes';
+import { BrowserRouter } from 'react-router-dom';
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -18,11 +20,12 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="app">
-      {user ? <Profile /> : <AuthComponent />}
-    </div>
+    <BrowserRouter>
+      <div className="app">
+        {user ? <AppRoutes user={user} /> : <AuthComponent />}
+      </div>
+    </BrowserRouter>
   );
 };
 
 export default App;
-
