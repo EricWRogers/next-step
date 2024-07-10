@@ -1,0 +1,20 @@
+.daily-planner-card {
+  min-width: 300px;
+  width: 300px;
+  min-height: 300px;
+  max-height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  background-color: #ffffff;
+  border-right: 1px solid #ddd;
+  border-radius: 20px;
+  /* Adding rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Adjust width as needed */
+  margin: 1rem;
+  /* Optional: Adding margin for spacing */
+  overflow: hidden;
+  position: relative;
+}

@@ -1,0 +1,24 @@
+.dashboard-layout {
+    display: flex;
+    justify-content: center;
+}
+
+.virtical-container {
+    display: flex;
+    height: 600px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.right-cards-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .top-row,
+  .bottom-row {
+    display: flex;
+    justify-content: space-between;
+  }
