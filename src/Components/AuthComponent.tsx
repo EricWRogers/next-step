@@ -17,7 +17,7 @@ const AuthComponent: React.FC = () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(userCredential.user, {
-        displayName: `${firstName} ${lastName}`,
+        displayName: `${firstName}.${lastName}`,
         photoURL: 'https://legacy.reactjs.org/logo-og.png'
       });
       console.log("Registered user:", userCredential.user);
@@ -42,20 +42,22 @@ const AuthComponent: React.FC = () => {
   };
 
   return (
-    <div className="auth-container">
+    <div className="auth-panel">
       {isNewUser ? (
-        <div className="panel">
+        <div className="auth-container">
           <h2>Register</h2>
           <form onSubmit={handleRegister}>
             <input 
-              type="text" 
+              type="text"
+              className='inputFirstName'
               value={firstName} 
               onChange={(e) => setFirstName(e.target.value)} 
               placeholder="First Name" 
               required 
             />
             <input 
-              type="text" 
+              type="text"
+              className='inputLastName'
               value={lastName} 
               onChange={(e) => setLastName(e.target.value)} 
               placeholder="Last Name" 
@@ -81,7 +83,7 @@ const AuthComponent: React.FC = () => {
           <a className='AuthPanel_a' onClick={() => setIsNewUser(false)}>Already registered? Log in</a>
         </div>
       ) : (
-        <div className="panel">
+        <div className="auth-container">
           <h2>Login</h2>
           <form onSubmit={handleLogin}>
             <input 

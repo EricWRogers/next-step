@@ -1,8 +1,21 @@
+.auth-panel {
+    display: flex;
+    max-width: 600px;
+    flex-direction: column;
+    width: 100%;  /* Ensures the panel takes the full width up to max-width */
+    padding: 20px;  /* Optional: add padding for better visual spacing */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Optional: add shadow for better visual effect */
+    background-color: #ffffff;  /* Optional: add background color */
+    border-radius: 8px;  /* Optional: add border radius for rounded corners */
+}
+
+
 .auth-container {
     display: flex;
-    justify-content: center;
+    justify-content: center;  /* Centers children horizontally */
+    align-items: center;  /* Centers children vertically */
+    height: 100vh;  /* Makes the container take the full height of the viewport */
     gap: 20px;
-    padding: 20px;
 }
 
 .auth-container a {
@@ -13,10 +26,28 @@
     color: #4CAF50;
 }
 
-
 .auth-container input[type="email"],
 input[type="password"] {
     width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.inputFirstName {
+    width: 47.5%;
+    padding: 8px;
+    margin: 10px 0;
+    margin-right: 5%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.inputLastName {
+    width: 47.5%;
     padding: 8px;
     margin: 10px 0;
     box-sizing: border-box;
