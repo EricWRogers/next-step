@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { auth } from '../FirebaseConfig';
+import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import './AuthComponent.css'; // Make sure this path is correct
 
@@ -9,6 +10,7 @@ const AuthComponent: React.FC = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [isNewUser, setIsNewUser] = useState(true);  // State to toggle between login and register
+  const navigate = useNavigate();
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,6 +21,9 @@ const AuthComponent: React.FC = () => {
         photoURL: 'https://legacy.reactjs.org/logo-og.png'
       });
       console.log("Registered user:", userCredential.user);
+      
+      navigate('/dashboard');
+
     } catch (error: any) {
       console.error("Error in registration:", error.message);
     }
@@ -29,6 +34,8 @@ const AuthComponent: React.FC = () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log("Logged in user:", userCredential.user);
+
+      navigate('/dashboard');
     } catch (error: any) {
       console.error("Error in login:", error.message);
     }

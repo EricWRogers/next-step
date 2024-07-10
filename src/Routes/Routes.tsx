@@ -10,8 +10,7 @@ import { User } from "firebase/auth";
 export const AppRoutes = ({ user }: { user: User | null }) => {
     return (
       <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/" element={<AuthPage />} />
         <Route path="/dashboard" element={<ProtectedRoute user={user}><DashboardPage /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute user={user}><ProfilePage /></ProtectedRoute>} />
       </Routes>
