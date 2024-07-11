@@ -1,5 +1,5 @@
 import React from 'react';
-import { auth } from '../FirebaseConfig';
+import { auth, userData } from '../FirebaseConfig';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import logoIcon from '../logo.png';
@@ -16,8 +16,8 @@ import './Header.css';
 
     const handleClick = () => {
       if (location.pathname === '/dashboard') {
-        navigate('/profile');
-      } else if (location.pathname.startsWith('/profile')) {
+        navigate('/profile/' + userData.firstName + '.' + userData.lastName);
+      } else {
         navigate('/dashboard');
       }
     };
