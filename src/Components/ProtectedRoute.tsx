@@ -1,10 +1,10 @@
 // ProtectedRoute.tsx
-import { User } from 'firebase/auth';
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import { loggedIn } from '../PocketbaseConfig';
 
-const ProtectedRoute = ({ user, children }: { user: User | null, children: JSX.Element }) => {
-  if (!user) {
+const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+  if (!loggedIn()) {
     return <Navigate to="/auth" />;
   }
   return children;

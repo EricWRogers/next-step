@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import PocketBase from 'pocketbase';
 import { auth } from '../FirebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import './AuthComponent.css'; // Make sure this path is correct
+import { authRecord, pocketBase } from '../PocketbaseConfig';
 
 const AuthComponent: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -15,15 +17,22 @@ const AuthComponent: React.FC = () => {
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(userCredential.user, {
-        displayName: `${firstName}.${lastName}`,
-        photoURL: 'https://legacy.reactjs.org/logo-og.png'
-      });
-      console.log("Registered user:", userCredential.user);
+      // example create data
+      const data = {
+        "username": `${firstName}.${lastName}`,
+        "email": email,
+        "emailVisibility": true,
+        "password": password,
+        "passwordConfirm": password,
+        "name": `${firstName} ${lastName}`
+      };
+
+      const record = await pocketBase.collection('users').create(data);
+
+      // send an email verification request
+      const responce = await pocketBase.collection('users').requestVerification(email);
       
       navigate('/dashboard');
-
     } catch (error: any) {
       console.error("Error in registration:", error.message);
     }
@@ -32,8 +41,8 @@ const AuthComponent: React.FC = () => {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log("Logged in user:", userCredential.user);
+      console.log(`email: ${email}, password: ${password}`)
+      const authData = await pocketBase.collection('users').authWithPassword(email, password);
 
       navigate('/dashboard');
     } catch (error: any) {
