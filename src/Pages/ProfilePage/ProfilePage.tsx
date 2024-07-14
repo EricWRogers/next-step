@@ -34,7 +34,7 @@ const ProfilePage = () => {
 
                 console.error("Error fetching user data:", error);
                 
-                //navigate('/dashboard');
+                navigate('/dashboard');
             } finally {
                 setLoading(false);
             }
