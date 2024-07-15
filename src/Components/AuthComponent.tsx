@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import PocketBase from 'pocketbase';
+import PocketBase, { RecordModel } from 'pocketbase';
 import { auth } from '../FirebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import './AuthComponent.css'; // Make sure this path is correct
-import { authRecord, pocketBase } from '../PocketbaseConfig';
+import { authRecord, pocketBase, UserConnections } from '../PocketbaseConfig';
 
 const AuthComponent: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -27,10 +27,26 @@ const AuthComponent: React.FC = () => {
         "name": `${firstName} ${lastName}`
       };
 
-      const record = await pocketBase.collection('users').create(data);
+      const record : RecordModel = await pocketBase.collection('users').create(data);
 
       // send an email verification request
       const responce = await pocketBase.collection('users').requestVerification(email);
+
+      // check if the users_connections collection has no entery for this user
+      const result = await pocketBase.collection("users_connections").getList<UserConnections>(1, 1, {
+        filter: `id="${pocketBase.authStore.model?.id}"`,
+        $autoCancel: false
+      });
+
+      if (result.items.length == 0)
+      {
+        const usersConnectionData = {
+          "username": pocketBase.authStore.model?.username,
+          "connections": '{"connections":[]}'
+        }
+
+        await pocketBase.collection('users_connections').create(usersConnectionData);
+      }
       
       navigate('/dashboard');
     } catch (error: any) {
@@ -43,6 +59,22 @@ const AuthComponent: React.FC = () => {
     try {
       console.log(`email: ${email}, password: ${password}`)
       const authData = await pocketBase.collection('users').authWithPassword(email, password);
+
+      // check if the users_connections collection has no entery for this user
+      const result = await pocketBase.collection("users_connections").getList<UserConnections>(1, 1, {
+        filter: `id="${pocketBase.authStore.model?.id}"`,
+        $autoCancel: false
+      });
+
+      if (result.items.length == 0)
+      {
+        const usersConnectionData = {
+          "username": pocketBase.authStore.model?.username,
+          "connections": '{"connections":[]}'
+        }
+
+        await pocketBase.collection('users_connections').create(usersConnectionData);
+      }
 
       navigate('/dashboard');
     } catch (error: any) {
