@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './ProfileCard.css';
-import { pocketBase, UserConnectionRequest } from '../../PocketbaseConfig';
+import { Connection, pocketBase, UserConnectionRequest, UserConnections } from '../../PocketbaseConfig';
 import { RecordModel } from 'pocketbase';
 
 export enum ConnectionStatus {
@@ -33,6 +33,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   connectionStatus,
   userProileData
 }) => {
+  const [status, setStatus] = useState(connectionStatus);
 
   const onConnectClick = async () => {
     // example create data
@@ -44,10 +45,58 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     };
 
     const record = await pocketBase.collection('users_connection_request').create(data);
+    setStatus(ConnectionStatus.SENT);
   };
 
+  const onAcceptClick = async () => {
+    var connectionsData: UserConnections | null = null;
+
+    // check connection
+    try {
+      connectionsData = await pocketBase.collection("users_connections")
+        .getOne<UserConnections>((pocketBase.authStore.model as RecordModel).id);
+    } catch (error) {
+      console.log("Todo: add collection data here");
+    }
+
+    var connectData: Connection = {
+      id: userProileData?.id as string,
+    };
+
+    connectionsData?.connections?.connections.push(connectData);
+
+    const record = await pocketBase.collection('users_connections')
+      .update(connectionsData?.id as string, connectionsData as any);
+    
+    setStatus(ConnectionStatus.CONNECTED);
+  };
+
+  const onDenyClick = async () => {
+    var foundRequest: UserConnectionRequest | null = null;
+
+    // check connection
+    try {
+      const connectionsRequest = await pocketBase.collection("users_connection_request")
+        .getList<UserConnectionRequest>(1, 100, { filter: `sender_id="${userProileData?.id}"` });
+
+      foundRequest = connectionsRequest.items
+        .find(request => request.target_id === (pocketBase.authStore.model as RecordModel).id) as UserConnectionRequest;
+    } catch (error) {
+      console.log("Todo: handle deleting ");
+    }
+
+    await pocketBase.collection('users_connection_request')
+      .delete(foundRequest?.id as string);
+    
+    setStatus(ConnectionStatus.NONE);
+  };
+
+  useEffect(() => {
+    setStatus(connectionStatus);
+  }, [connectionStatus]);
+
   if (myPage == false) {
-    if (connectionStatus == ConnectionStatus.NONE) {
+    if (status == ConnectionStatus.NONE) {
       return (
         <div className="profile-card">
           <img src={bannerImage} alt="Banner" className="profile-banner-image" />
@@ -62,7 +111,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         </div>
       );
     }
-    else if (connectionStatus == ConnectionStatus.CONNECTED) {
+    else if (status == ConnectionStatus.CONNECTED) {
       return (
         <div className="profile-card">
           <img src={bannerImage} alt="Banner" className="profile-banner-image" />
@@ -77,7 +126,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         </div>
       );
     }
-    else if (connectionStatus == ConnectionStatus.SENT) {
+    else if (status == ConnectionStatus.SENT) {
       return (
         <div className="profile-card">
           <img src={bannerImage} alt="Banner" className="profile-banner-image" />
@@ -104,8 +153,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <p>{email}</p>
           </div>
           <h2>Received Request</h2>
-          <button className="connect-button">Accept</button>
-          <button className="connect-button">Deny</button>
+          <button className="connect-button" onClick={onAcceptClick}>Accept</button>
+          <button className="connect-button" onClick={onDenyClick}>Deny</button>
         </div>
       );
     }

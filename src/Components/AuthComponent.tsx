@@ -41,6 +41,7 @@ const AuthComponent: React.FC = () => {
       if (result.items.length == 0)
       {
         const usersConnectionData = {
+          "id": pocketBase.authStore.model?.id,
           "username": pocketBase.authStore.model?.username,
           "connections": '{"connections":[]}'
         }
@@ -69,6 +70,7 @@ const AuthComponent: React.FC = () => {
       if (result.items.length == 0)
       {
         const usersConnectionData = {
+          "id": pocketBase.authStore.model?.id,
           "username": pocketBase.authStore.model?.username,
           "connections": '{"connections":[]}'
         }
