@@ -19,7 +19,8 @@ interface ProfileCardProps {
   email: string;
   myPage: boolean;
   connectionStatus: ConnectionStatus;
-  userProileData: RecordModel | null;
+  id: string;
+  username: string;
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
@@ -31,7 +32,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   email,
   myPage,
   connectionStatus,
-  userProileData
+  id,
+  username,
 }) => {
   const [status, setStatus] = useState(connectionStatus);
 
@@ -40,8 +42,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     const data = {
       sender_id: (pocketBase.authStore.model as RecordModel).id,
       sender_username: (pocketBase.authStore.model as RecordModel).username,
-      target_id: userProileData?.id as string,
-      target_username: userProileData?.username as string
+      target_id: id as string,
+      target_username: username as string
     };
 
     const record = await pocketBase.collection('users_connection_request').create(data);
@@ -60,7 +62,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     }
 
     var connectData: Connection = {
-      id: userProileData?.id as string,
+      id: id as string,
     };
 
     connectionsData?.connections?.connections.push(connectData);
@@ -77,7 +79,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     // check connection
     try {
       const connectionsRequest = await pocketBase.collection("users_connection_request")
-        .getList<UserConnectionRequest>(1, 100, { filter: `sender_id="${userProileData?.id}"` });
+        .getList<UserConnectionRequest>(1, 100, { filter: `sender_id="${id}"` });
 
       foundRequest = connectionsRequest.items
         .find(request => request.target_id === (pocketBase.authStore.model as RecordModel).id) as UserConnectionRequest;
