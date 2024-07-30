@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { useParams } from 'react-router-dom';
 import './DailyPlannerCard.css';
 import useWindowDimensions from '../../WindowHelper';
 import { RecordModel } from 'pocketbase';
 import { pocketBase } from '../../PocketbaseConfig';
-import { Button } from 'beautiful-react-ui';
+import { Button, Input } from 'beautiful-react-ui';
 
 interface DailyPlannerCardProps {}
 
@@ -19,6 +19,7 @@ interface TaskItem {
 const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
   const { height, width } = useWindowDimensions();
   const [tasks, setTasks] = useState<TaskItem[]>([]);
+  const [newTaskTitle, setNewTaskTitle] = useState('');
 
   const getTaskData = async (user_id: string): Promise<TaskItem[]> => {
     const url = `http://localhost:8080/tasks?user_id=${user_id}`;
@@ -42,7 +43,21 @@ const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
     const response = await fetch(url);
 
     if (!response.ok) {
-      console.error('Failed to clear completed task');
+      console.error('Failed to update task completion');
+      return;
+    }
+
+    const data: TaskItem[] = await response.json();
+    setTasks(data);
+  };
+
+  const addUserDefinedTask = async (user_id: string, title: string) => {
+    const url = `http://localhost:8080/add_user_defined_tasks?user_id=${user_id}&title=${title}`;
+    
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      console.error('Failed to add user-defined task');
       return;
     }
 
@@ -56,7 +71,7 @@ const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
     const response = await fetch(url);
 
     if (!response.ok) {
-      console.error('Failed to update task completion');
+      console.error('Failed to clear completed tasks');
       return;
     }
 
@@ -82,56 +97,48 @@ const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
     updateTaskCompletion(task.id, task.user_id, !task.complete);
   };
 
-  const handleClearCompletedTask = () =>
-  {
+  const handleClearCompletedTask = () => {
     const loggedInUser = pocketBase.authStore.model as RecordModel;
     clearCompletedTask(loggedInUser.id);
   };
 
-  if (width > 1260) {
-    return (
-      <div className="daily-planner-card">
-        <h2>Daily Planner</h2>
-        <div>
-          <ul>
+  const handleAddTask = () => {
+    const loggedInUser = pocketBase.authStore.model as RecordModel;
+    addUserDefinedTask(loggedInUser.id, newTaskTitle);
+    setNewTaskTitle('');
+  };
+
+  const handleNewTaskTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewTaskTitle(e.target.value);
+  };
+
+  return (
+    <div className="daily-planner-card">
+      <h2>Daily Planner</h2>
+      <div>
+        <ul>
           {tasks.map((task) => (
-              <React.Fragment key={task.id}>
-                <input 
-                  type="checkbox" 
-                  id={`task-${task.id}`} 
-                  checked={task.complete} 
-                  onChange={() => handleCheckboxChange(task)} 
-                />
-                <label htmlFor={`task-${task.id}`}> {task.title} </label>
-              </React.Fragment>
-            ))}
-            <button onClick={handleClearCompletedTask}>Clear Completed</button>
-          </ul>
-        </div>
+            <React.Fragment key={task.id}>
+              <input 
+                type="checkbox" 
+                id={`task-${task.id}`} 
+                checked={task.complete} 
+                onChange={() => handleCheckboxChange(task)} 
+              />
+              <label htmlFor={`task-${task.id}`}> {task.title} </label>
+            </React.Fragment>
+          ))}
+        </ul>
+        <input 
+          placeholder="New Task Title" 
+          value={newTaskTitle}
+          onChange={handleNewTaskTitleChange}
+        />
+        <button onClick={handleAddTask}>Add Task</button>
+        <button onClick={handleClearCompletedTask}>Clear Completed</button>
       </div>
-    );
-  } else {
-    return (
-      <div className="daily-planner-card-horizanal">
-        <h2>Daily Planner</h2>
-        <div>
-          <ul>
-            {tasks.map((task) => (
-              <React.Fragment key={task.id}>
-                <input 
-                  type="checkbox" 
-                  id={`task-${task.id}`} 
-                  checked={task.complete} 
-                  onChange={() => handleCheckboxChange(task)} 
-                />
-                <label htmlFor={`task-${task.id}`}> {task.title} </label>
-              </React.Fragment>
-            ))}
-          </ul>
-        </div>
-      </div>
-    );
-  }
+    </div>
+  );
 };
 
 export default DailyPlannerCard;
