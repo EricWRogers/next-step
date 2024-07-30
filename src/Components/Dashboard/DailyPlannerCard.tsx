@@ -116,9 +116,9 @@ const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
     <div className="daily-planner-card">
       <h2>Daily Planner</h2>
       <div>
-        <ul>
+      <ul>
           {tasks.map((task) => (
-            <React.Fragment key={task.id}>
+            <li key={task.id}>
               <input 
                 type="checkbox" 
                 id={`task-${task.id}`} 
@@ -126,9 +126,10 @@ const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
                 onChange={() => handleCheckboxChange(task)} 
               />
               <label htmlFor={`task-${task.id}`}> {task.title} </label>
-            </React.Fragment>
+            </li>
           ))}
         </ul>
+
         <input 
           placeholder="New Task Title" 
           value={newTaskTitle}
