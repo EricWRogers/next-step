@@ -42,114 +42,9 @@ const ProfilePage: React.FC = () => {
                 console.log(profileData.connection_status)
 
                 setUserProfile(profileData);
-              } catch (error) {
+            } catch (error) {
                 console.error("Error:", error);
-              }
-            /*try {
-                const loggedInUser = pocketBase.authStore.model as RecordModel;
-                setMyUserData(loggedInUser);
-
-                const data = await pocketBase.collection("users").getFirstListItem(
-                    `username="${user_id}"`,
-                    { $autoCancel: false }
-                );
-
-                setUser(data);
-
-                if (loggedInUser?.id !== data?.id) {
-                    await checkConnectionStatus(loggedInUser, data);
-                }
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-                navigate('/dashboard');
-            } finally {
-                setLoading(false);
-            }*/
-        };
-
-        const checkConnectionStatus = async (loggedInUser: RecordModel, data: RecordModel) => {
-            let foundConnection = false;
-            let newStatus = ConnectionStatus.NONE;
-
-            try {
-                const connectionsData = await pocketBase.collection("users_connections")
-                    .getOne<UserConnections>(loggedInUser.id);
-
-                if (connectionsData?.connections?.connections.some(connection => connection.id === data.id)) {
-                    console.log("found connection");
-                    foundConnection = true;
-                    newStatus = ConnectionStatus.CONNECTED;
-                }
-            } catch (error) {
-                console.log("no connections");
-            }
-
-            if (foundConnection) {
-                setConnectionStatus(newStatus);
-                return;
-            }
-
-            try {
-                const userConnectionRequests = await pocketBase.collection("users_connection_request")
-                    .getList<UserConnectionRequest>(1, 100, { filter: `sender_id="${loggedInUser.id}"` });
-
-                const foundRequest = userConnectionRequests.items.find(request => request.target_id === data.id);
-
-                if (foundRequest) {
-                    let accepted = false;
-                    try {
-                        const targetConnectionsData = await pocketBase.collection("users_connections")
-                            .getOne<UserConnections>(data.id);
-
-                        if (targetConnectionsData?.connections?.connections.some(connection => connection.id === loggedInUser.id)) {
-                            accepted = true;
-                        }
-                    } catch (error) {
-                        console.log("Users Connections Database Request Error:", error);
-                    }
-
-                    if (accepted) {
-                        await pocketBase.collection('users_connection_request').delete(foundRequest.id);
-                        await addConnection(loggedInUser, data);
-                        newStatus = ConnectionStatus.CONNECTED;
-                    } else {
-                        newStatus = ConnectionStatus.SENT;
-                    }
-                    setConnectionStatus(newStatus);
-                    return;
-                }
-            } catch (error) {
-                console.log("no request sent");
-            }
-
-            try {
-                const userConnectionRequests = await pocketBase.collection("users_connection_request")
-                    .getList<UserConnectionRequest>(1, 100, { filter: `target_id="${loggedInUser.id}"` });
-
-                if (userConnectionRequests.items.some(request => request.sender_id === data.id)) {
-                    newStatus = ConnectionStatus.RECEIVED;
-                }
-            } catch (error) {
-                console.log("no request received");
-            }
-            setConnectionStatus(newStatus);
-        };
-
-        const addConnection = async (loggedInUser: RecordModel, data: RecordModel) => {
-            try {
-                const connectionsData = await pocketBase.collection("users_connections")
-                    .getOne<UserConnections>(loggedInUser.id);
-
-                const connectData: Connection = { id: data.id };
-
-                connectionsData.connections.connections.push(connectData);
-
-                await pocketBase.collection('users_connections')
-                    .update(connectionsData.id, connectionsData);
-
-                setConnectionStatus(ConnectionStatus.CONNECTED);
-            } catch (error) {
-                console.log("Error adding new connection:", error);
+                navigate("/dashboard");
             }
         };
 
@@ -158,7 +53,8 @@ const ProfilePage: React.FC = () => {
 
             const response = await fetch(url);
             if (!response.ok) {
-                throw new Error(`Error fetching profile data: ${response.statusText}`);
+                //throw new Error(`Error fetching profile data: ${response.statusText}`);
+                navigate("/dashboard");
             }
 
             const data: UserProfile = await response.json();
