@@ -4,6 +4,7 @@ import './DailyPlannerCard.css';
 import useWindowDimensions from '../../WindowHelper';
 import { RecordModel } from 'pocketbase';
 import { pocketBase } from '../../PocketbaseConfig';
+import { Button } from 'beautiful-react-ui';
 
 interface DailyPlannerCardProps {}
 
@@ -16,7 +17,6 @@ interface TaskItem {
 }
 
 const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
-  const { user_id } = useParams();
   const { height, width } = useWindowDimensions();
   const [tasks, setTasks] = useState<TaskItem[]>([]);
 
@@ -42,12 +42,26 @@ const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
     const response = await fetch(url);
 
     if (!response.ok) {
+      console.error('Failed to clear completed task');
+      return;
+    }
+
+    const data: TaskItem[] = await response.json();
+    setTasks(data);
+  };
+
+  const clearCompletedTask = async (user_id : string) => {
+    const url = `http://localhost:8080/clear_completed_tasks?user_id=${user_id}`;
+    
+    const response = await fetch(url);
+
+    if (!response.ok) {
       console.error('Failed to update task completion');
       return;
     }
 
-    const updatedTasks = await getTaskData(user_id);
-    setTasks(updatedTasks);
+    const data: TaskItem[] = await response.json();
+    setTasks(data);
   };
 
   useEffect(() => {
@@ -68,14 +82,20 @@ const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
     updateTaskCompletion(task.id, task.user_id, !task.complete);
   };
 
+  const handleClearCompletedTask = () =>
+  {
+    const loggedInUser = pocketBase.authStore.model as RecordModel;
+    clearCompletedTask(loggedInUser.id);
+  };
+
   if (width > 1260) {
     return (
       <div className="daily-planner-card">
         <h2>Daily Planner</h2>
         <div>
           <ul>
-            {tasks.map((task) => (
-              <li key={task.id}>
+          {tasks.map((task) => (
+              <React.Fragment key={task.id}>
                 <input 
                   type="checkbox" 
                   id={`task-${task.id}`} 
@@ -83,8 +103,9 @@ const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
                   onChange={() => handleCheckboxChange(task)} 
                 />
                 <label htmlFor={`task-${task.id}`}> {task.title} </label>
-              </li>
+              </React.Fragment>
             ))}
+            <button onClick={handleClearCompletedTask}>Clear Completed</button>
           </ul>
         </div>
       </div>
