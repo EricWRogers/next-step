@@ -1,0 +1,35 @@
+.question-box {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.question-box h2 {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.option {
+    margin-bottom: 10px;
+}
+
+.option input[type="radio"] {
+    margin-right: 10px;
+}
+
+.option label {
+    font-family: Arial, sans-serif;
+    color: #333;
+}
