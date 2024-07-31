@@ -38,12 +38,14 @@
 
 .daily-planner-card {
   max-width: 500px;
-  margin: auto;
+  margin: 1rem;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
+  overflow: hidden;
+  position: relative;
 }
 
 .daily-planner-card h2 {

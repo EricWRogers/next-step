@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, KeyboardEvent } from 'react';
 import { useParams } from 'react-router-dom';
 import './DailyPlannerCard.css';
 import useWindowDimensions from '../../WindowHelper';
@@ -105,6 +105,12 @@ const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
     setNewTaskTitle(e.target.value);
   };
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleAddTask();
+    }
+  };
+
   return (
     <div className="daily-planner-card">
       <h2>Daily Planner</h2>
@@ -128,6 +134,7 @@ const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
             placeholder="New Task Title"
             value={newTaskTitle}
             onChange={handleNewTaskTitleChange}
+            onKeyDown={handleKeyDown}
           />
           <button onClick={handleAddTask} className="add-task-button">
             <i className="fas fa-plus"></i>
