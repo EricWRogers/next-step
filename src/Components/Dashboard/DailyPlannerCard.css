@@ -1,4 +1,4 @@
-.daily-planner-card {
+/*.daily-planner-card {
   min-width: 300px;
   width: 300px;
   min-height: 300px;
@@ -10,14 +10,11 @@
   background-color: #ffffff;
   border-right: 1px solid #ddd;
   border-radius: 20px;
-  /* Adding rounded corners */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  /* Adjust width as needed */
   margin: 1rem;
-  /* Optional: Adding margin for spacing */
   overflow: hidden;
   position: relative;
-}
+}*/
 
 .daily-planner-card-horizanal {
   min-width: 400px;
@@ -37,4 +34,83 @@
   /* Optional: Adding margin for spacing */
   overflow: hidden;
   position: relative;
+}
+
+.daily-planner-card {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+.daily-planner-card h2 {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.daily-planner-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.daily-planner-card .task-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.daily-planner-card .task-item input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.daily-planner-card .task-item label {
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.daily-planner-card .task-item label.completed {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.daily-planner-card .task-input {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.daily-planner-card .task-input input {
+  flex-grow: 1;
+  padding: 8px;
+  font-size: 16px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.daily-planner-card .task-input .add-task-button,
+.daily-planner-card .clear-completed-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.daily-planner-card .task-input .add-task-button:hover,
+.daily-planner-card .clear-completed-button:hover {
+  background-color: #0056b3;
+}
+
+.daily-planner-card .task-input .add-task-button i,
+.daily-planner-card .clear-completed-button i {
+  margin-right: 5px;
 }

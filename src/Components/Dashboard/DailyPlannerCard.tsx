@@ -4,9 +4,9 @@ import './DailyPlannerCard.css';
 import useWindowDimensions from '../../WindowHelper';
 import { RecordModel } from 'pocketbase';
 import { pocketBase } from '../../PocketbaseConfig';
-import { Button, Input } from 'beautiful-react-ui';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
-interface DailyPlannerCardProps {}
+interface DailyPlannerCardProps { }
 
 interface TaskItem {
   id: string;
@@ -24,24 +24,19 @@ const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
   const getTaskData = async (user_id: string): Promise<TaskItem[]> => {
     const url = `http://localhost:8080/tasks?user_id=${user_id}`;
 
-    console.log(url);
-
     const response = await fetch(url);
     if (!response.ok) {
-      // If there is an error, return an empty array
       return [];
     }
 
     const data: TaskItem[] = await response.json();
-
     return data;
   };
 
   const updateTaskCompletion = async (task_id: string, user_id: string, complete: boolean) => {
     const url = `http://localhost:8080/complete_tasks?id=${task_id}&user_id=${user_id}&complete=${complete}`;
-    
-    const response = await fetch(url);
 
+    const response = await fetch(url);
     if (!response.ok) {
       console.error('Failed to update task completion');
       return;
@@ -53,9 +48,8 @@ const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
 
   const addUserDefinedTask = async (user_id: string, title: string) => {
     const url = `http://localhost:8080/add_user_defined_tasks?user_id=${user_id}&title=${title}`;
-    
-    const response = await fetch(url);
 
+    const response = await fetch(url);
     if (!response.ok) {
       console.error('Failed to add user-defined task');
       return;
@@ -65,11 +59,10 @@ const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
     setTasks(data);
   };
 
-  const clearCompletedTask = async (user_id : string) => {
+  const clearCompletedTask = async (user_id: string) => {
     const url = `http://localhost:8080/clear_completed_tasks?user_id=${user_id}`;
-    
-    const response = await fetch(url);
 
+    const response = await fetch(url);
     if (!response.ok) {
       console.error('Failed to clear completed tasks');
       return;
@@ -116,27 +109,33 @@ const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
     <div className="daily-planner-card">
       <h2>Daily Planner</h2>
       <div>
-      <ul>
+        <ul>
           {tasks.map((task) => (
-            <li key={task.id}>
-              <input 
-                type="checkbox" 
-                id={`task-${task.id}`} 
-                checked={task.complete} 
-                onChange={() => handleCheckboxChange(task)} 
+            <li key={task.id} className="task-item">
+              <input
+                type="checkbox"
+                id={`task-${task.id}`}
+                checked={task.complete}
+                onChange={() => handleCheckboxChange(task)}
               />
-              <label htmlFor={`task-${task.id}`}> {task.title} </label>
+              <label htmlFor={`task-${task.id}`} className={task.complete ? "completed" : ""}> {task.title} </label>
             </li>
           ))}
         </ul>
 
-        <input 
-          placeholder="New Task Title" 
-          value={newTaskTitle}
-          onChange={handleNewTaskTitleChange}
-        />
-        <button onClick={handleAddTask}>Add Task</button>
-        <button onClick={handleClearCompletedTask}>Clear Completed</button>
+        <div className="task-input">
+          <input
+            placeholder="New Task Title"
+            value={newTaskTitle}
+            onChange={handleNewTaskTitleChange}
+          />
+          <button onClick={handleAddTask} className="add-task-button">
+            <i className="fas fa-plus"></i>
+          </button>
+        </div>
+        <button onClick={handleClearCompletedTask} className="clear-completed-button">
+          <i className="fas fa-trash-alt"></i> Clear Completed
+        </button>
       </div>
     </div>
   );
