@@ -10,6 +10,7 @@ import { BrowserRouter } from 'react-router-dom';
 const App: React.FC = () => {
   return (
     <BrowserRouter>
+      <title>NextStep</title>
       <div className="app">
         {loggedIn() ? <AppRoutes/> : <AuthComponent />}
       </div>
