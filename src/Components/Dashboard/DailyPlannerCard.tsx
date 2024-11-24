@@ -22,7 +22,7 @@ const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
   const getTaskData = async (user_id: string): Promise<TaskItem[]> => {
-    const url = `http://localhost:8080/tasks?user_id=${user_id}`;
+    const url = `http://192.168.1.79:8080/tasks?user_id=${user_id}`;
 
     const response = await fetch(url);
     if (!response.ok) {
@@ -34,7 +34,7 @@ const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
   };
 
   const updateTaskCompletion = async (task_id: string, user_id: string, complete: boolean) => {
-    const url = `http://localhost:8080/complete_tasks?id=${task_id}&user_id=${user_id}&complete=${complete}`;
+    const url = `http://192.168.1.79:8080/complete_tasks?id=${task_id}&user_id=${user_id}&complete=${complete}`;
 
     const response = await fetch(url);
     if (!response.ok) {
@@ -47,7 +47,7 @@ const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
   };
 
   const addUserDefinedTask = async (user_id: string, title: string) => {
-    const url = `http://localhost:8080/add_user_defined_tasks?user_id=${user_id}&title=${title}`;
+    const url = `http://192.168.1.79:8080/add_user_defined_tasks?user_id=${user_id}&title=${title}`;
 
     const response = await fetch(url);
     if (!response.ok) {
@@ -60,7 +60,7 @@ const DailyPlannerCard: React.FC<DailyPlannerCardProps> = ({ }) => {
   };
 
   const clearCompletedTask = async (user_id: string) => {
-    const url = `http://localhost:8080/clear_completed_tasks?user_id=${user_id}`;
+    const url = `http://192.168.1.79:8080/clear_completed_tasks?user_id=${user_id}`;
 
     const response = await fetch(url);
     if (!response.ok) {

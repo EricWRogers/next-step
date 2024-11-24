@@ -49,7 +49,7 @@ const ProfilePage: React.FC = () => {
         };
 
         const getProfileData = async (senderId: string, targetUsername: string): Promise<UserProfile> => {
-            const url = `http://localhost:8080/profile?sender_id=${senderId}&target_username=${targetUsername}`;
+            const url = `http://192.168.1.79:8080/profile?sender_id=${senderId}&target_username=${targetUsername}`;
 
             const response = await fetch(url);
             if (!response.ok) {
