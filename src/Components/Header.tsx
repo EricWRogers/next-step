@@ -23,19 +23,6 @@ const Header: React.FC = () => {
   const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
   const [user, setUser] = useState<RecordModel | null>(null);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const loggedInUser = pocketBase.authStore.model as RecordModel;
-        setUser(loggedInUser);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchUser();
-  }, []);
-
   const handleClick = () => {
     if (user) {
       if (location.pathname === '/dashboard') {
@@ -85,6 +72,27 @@ const Header: React.FC = () => {
     setSearchQuery("");
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && searchResults.length > 0) {
+      const firstResult = searchResults[0];
+      navigate('/profile/' + firstResult.username);
+      setSearchQuery("");
+    }
+  };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const loggedInUser = pocketBase.authStore.model as RecordModel;
+        setUser(loggedInUser);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
   if (!user) {
     return (
       <header className="header">
@@ -119,6 +127,7 @@ const Header: React.FC = () => {
               onBlur={handleSearchBlur}
               value={searchQuery}
               onChange={handleSearchChange}
+              onKeyDown={handleKeyPress}
             />
             {isSearchActive && searchQuery && (
               <div className="header__search-bubble">
