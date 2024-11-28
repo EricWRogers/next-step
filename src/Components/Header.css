@@ -124,6 +124,22 @@
   background-color: #f0f0f0;
 }
 
+.header__search-bubble-person {
+  position: relative;
+}
+
+.header__search-bubble-person img {
+  width: 30px;
+  height: 30px;
+  margin-left: 0.5px;
+  border-radius: 50%;
+}
+
+.header__search-list-name {
+  vertical-align: middle; /* Centers vertically */
+  padding-bottom: 15%;
+}
+
 .profile-button {
   background-color: #8bc34a;
   border: none;

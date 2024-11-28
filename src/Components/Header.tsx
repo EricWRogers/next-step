@@ -8,11 +8,13 @@ import bannerImage from '../banner-image.png';
 import './Header.css';
 import { RecordModel } from 'pocketbase';
 import { pocketBase } from '../PocketbaseConfig';
+import { Avatar } from 'beautiful-react-ui';
 
 interface SearchItem {
   first: string;
   last: string;
   username: string;
+  user: RecordModel;
 }
 
 const Header: React.FC = () => {
@@ -56,6 +58,7 @@ const Header: React.FC = () => {
           first: (item.name as string).split(" ")[0],
           last: (item.name as string).split(" ")[1],
           username: item.username,
+          user: item
         }));
 
         setSearchResults(results);
@@ -133,8 +136,9 @@ const Header: React.FC = () => {
               <div className="header__search-bubble">
                 <ul>
                   {searchResults.map((person, index) => (
-                    <li key={index} onClick={() => handleItemClick(index)}>
-                      {person.first} {person.last}
+                    <li key={index} onClick={() => handleItemClick(index)} style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+                        <img src={(pocketBase.getFileUrl(person.user, person.user.avatar) as string) || profilePic} alt="Profile" className="profile-icon" />
+                        <span className="header__search-list-name">{" "} {person.first} {" "} {person.last}</span>
                     </li>
                   ))}
                 </ul>
